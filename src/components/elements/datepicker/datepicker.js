@@ -35,23 +35,24 @@ class DatePicker extends Component {
         }
     }
 
-    show = () => {    
-        this.setState({visible: true})
+    show = () => {
+        this.setState({ visible: true })
     }
 
     hide = () => {
-        this.setState({visible: false})
+        this.setState({ visible: false })
     }
 
     render() {
-        const {visible} = this.state
+        const { visible } = this.state
         return (
             <div className="ardp-date-picker">
-                <Input type="text" readOnly={true} onClick={this.show} />
-                <Calendar visible={visible}/>
+                <Input type="text" readOnly={true} onClick={this.show} value={DateUtilities.toString(this.state.selected)} />
+                <Calendar visible={visible} view={this.state.view} selected={this.state.selected} onSelect={this.onSelect}
+                    minDate={this.state.minDate} maxDate={this.state.maxDate} />
             </div>
         )
     }
-}    
+}
 
 export default DatePicker

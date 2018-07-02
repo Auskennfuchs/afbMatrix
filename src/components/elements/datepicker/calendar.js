@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import MonthHeader from './monthheader';
 import WeekHeader from './weekheader';
+import Weeks from './weeks';
 
 const CalendarContainer = styled.div`
     display: ${props => props.visible ? "block" : "none"};
@@ -25,6 +26,7 @@ export default class Calendar extends Component {
             <CalendarContainer visible={visible}>
                 <MonthHeader />
                 <WeekHeader/>
+                <Weeks view={this.props.view} selected={this.props.selected} onSelect={this.props.onSelect} minDate={this.props.minDate} maxDate={this.props.maxDate}/>
             </CalendarContainer>
         )
     }
