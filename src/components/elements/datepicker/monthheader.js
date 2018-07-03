@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
+import DateUtilities from './dateutilites';
 
 const MonthHeaderWrapper = styled.div`
     float: left;
@@ -24,12 +25,45 @@ const MonthHeaderWrapper = styled.div`
 `
 
 export default class MonthHeader extends Component {
+    state = {
+        view: DateUtilities.clone(this.props.view),
+        enabled: true
+    }
+
+    moveBackward = () => {
+        const view = DateUtilities.clone(this.state.view);
+        view.setMonth(view.getMonth()-1);
+        this.move(view, false);
+    }
+
+    moveForward = () => {
+        const view = DateUtilities.clone(this.state.view);
+        view.setMonth(view.getMonth()+1);
+        this.move(view, true);
+    }
+
+    move = (view, isForward) => {
+        if (!this.state.enabled)
+    	    return;
+
+    	this.setState({
+    	    view: view,
+    	    enabled: false
+    	});
+
+    	this.props.onMove(view, isForward);
+    }
+
+    enable = () => {
+    	this.setState({ enabled: true });
+    }
+
     render() {
         return (
             <MonthHeaderWrapper>
-                <Icon name="chevron circle left" />
-                <span>Monat</span>
-                <Icon name="chevron circle right" />
+                <Button icon="chevron circle left" onClick={this.moveBackward} disabled={!this.state.enabled}/>
+                <span>{DateUtilities.toMonthAndYearString(this.state.view)}</span>
+                <Button icon="chevron circle right" onClick={this.moveForward} disabled={!this.state.enabled}/>
             </MonthHeaderWrapper>
         )
     }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -16,7 +16,7 @@ UserRoute.propTyps = {
 }
 
 const mapStateToProps = (state) => ({
-    isAuthenticated: !!state.user.jwt
+    isAuthenticated: !!state.user.jwtToken
 })
 
 export default connect(mapStateToProps)(UserRoute)

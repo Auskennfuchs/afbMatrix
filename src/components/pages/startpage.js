@@ -1,33 +1,43 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import { loggedOut } from '../../actions/user'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import Header from '../elements/header';
-import DatePicker from '../elements/datepicker/datepicker';
+import DatePicker from '../elements/datepicker/datepicker'
+import { Card, Icon } from 'semantic-ui-react'
+import AppTemplate from '../assets/apptemplate'
 
 class StartPage extends Component {
-    onLogout = () => {
-        this.props.logout().then(this.props.history.push("/"))
+
+    redirectTo = (path) => {
+        this.props.history.push(path)
     }
+
     render() {
         return (
-            <div>
-                <Header title="Start" onLogout={this.onLogout}/>
-                <DatePicker/>
-            </div>
+            <AppTemplate title="Start" history={this.props.history}>
+                <DatePicker />
+                <Card.Group centered>
+                    <Card link onClick={() => this.redirectTo("/conditions")}>
+                        <Card.Content>
+                            <Card.Header><Icon name="clipboard list" size="big" />Konditionen</Card.Header>
+                            <Card.Description>Toller Text<br />zweite Zeil</Card.Description>
+                        </Card.Content>
+                    </Card>
+                    <Card link>
+                        <Card.Content>
+                            <Card.Header><Icon name="calculator" size="big" />Methoden</Card.Header>
+                            <Card.Description>Toller Text</Card.Description>
+                        </Card.Content>
+                    </Card>
+                </Card.Group>
+            </AppTemplate>
         )
     }
 }
 
 StartPage.propTypes = {
-    logout: PropTypes.func.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired
     }).isRequired
 }
 
-const mapDispatchToProps = (dispatch)=>({ 
-    logout: () => Promise.resolve(dispatch(loggedOut()))
- })
-
-export default connect(null,mapDispatchToProps)(StartPage)
+export default connect()(StartPage)

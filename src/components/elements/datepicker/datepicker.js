@@ -43,6 +43,11 @@ class DatePicker extends Component {
         this.setState({ visible: false })
     }
 
+    onSelect = (day) => {
+        this.setState({selected: day})
+        this.hide();
+    }
+
     render() {
         const { visible } = this.state
         return (

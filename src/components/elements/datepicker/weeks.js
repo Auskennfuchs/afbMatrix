@@ -1,15 +1,47 @@
-import React, { Component } from 'react';
-import DateUtilities from './dateutilites';
-import styled from 'styled-components';
-import Week from './week';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import DateUtilities from './dateutilites'
+import styled from 'styled-components'
+import Week from './week'
 
 
-const WeekWrapper = styled.div`
+const WeeksWrapper = styled.div`
 float: left;
 width: 100%;
 overflow: hidden;
 position: relative;
 height: 140px;
+`
+
+const WeekWrapper = styled.div`
+    position: absolute;
+    width: 250px;
+    &.current {
+        left: 0;        
+    }
+
+    &.other {
+        left: 250px;        
+
+        &.right {
+            left: -250px;
+        }
+    }
+
+    &.sliding {
+        transition: transform 100ms ease;
+        -webkit-transition: -webkit-transform 100ms ease;
+        
+        &.left {
+            transform: translate3d(-250px, 0, 0);
+            -webkit-transform: translate3d(-250px, 0, 0);          
+        }
+
+        &.right {
+            transform: translate3d(250px, 0, 0);
+            -webkit-transform: translate3d(250px, 0, 0);          
+        }
+    }
 `
 
 class Weeks extends Component {
@@ -21,6 +53,19 @@ class Weeks extends Component {
             other: DateUtilities.clone(this.props.view),
             sliding: null
         }
+    }
+
+    componentDidMount() {
+        ReactDOM.findDOMNode(this.refs.current).addEventListener("transitionend",this.onTransitionEnd)
+    }
+
+    onTransitionEnd = () => {
+    	this.setState({
+            sliding: null,
+    	    view: DateUtilities.clone(this.state.other)
+    	});
+
+    	this.props.onTransitionEnd();
     }
 
     getWeekStartDates = (view) => {
@@ -41,6 +86,13 @@ class Weeks extends Component {
         return starts;
     }
 
+    moveTo = (view, isForward) => {
+    	this.setState({
+            sliding: isForward ? "left" : "right",
+            other: DateUtilities.clone(view)
+    	})
+    }
+
     renderWeeks = (view) => {
         var starts = this.getWeekStartDates(view),
             month = starts[1].getMonth()
@@ -53,9 +105,14 @@ class Weeks extends Component {
 
     render() {
         return (
-            <WeekWrapper>
-                {this.renderWeeks(this.state.view)}
-            </WeekWrapper>
+            <WeeksWrapper>
+                <WeekWrapper ref="current" className={"current"+ (this.state.sliding ? (" sliding " + this.state.sliding) : "")}>
+                    {this.renderWeeks(this.state.view)}
+                </WeekWrapper>
+                <WeekWrapper ref="other" className={"other"+ (this.state.sliding ? (" sliding " + this.state.sliding) : "")}>
+                    {this.renderWeeks(this.state.other)}
+                </WeekWrapper>
+            </WeeksWrapper>
         )
     }
 }

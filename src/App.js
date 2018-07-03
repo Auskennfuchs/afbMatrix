@@ -13,6 +13,7 @@ import UserRoute from './components/routes/userroute'
 import Theme from './themes'
 
 import configureStore from './configureStore'
+import ConditionsPage from './components/pages/conditionspage';
 const { store, persistor } = configureStore()
 
 
@@ -27,6 +28,7 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={LoginPage} />
                 <UserRoute path="/start" exact component={StartPage} />
+                <UserRoute path="/conditions" exact component={ConditionsPage} />
               </Switch>
             </div>
           </BrowserRouter>

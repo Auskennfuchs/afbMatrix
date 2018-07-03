@@ -14,15 +14,14 @@ class LoginPage extends Component {
         }
     }
 
-    onSubmit = (data) => {
-        this.props.login(data).then(()=>{
-            this.redirectNext()
-        })
-    }
+    onSubmit = (data) => (
+        this.props.login(data).then(()=>(
+            this.redirectNext()        
+        ))
+    )
 
-    redirectNext = ()=> {
-        this.props.history.push("/start")
-    }
+    redirectNext = () => this.props.history.push("/start")
+    
 
     render() {
         return (

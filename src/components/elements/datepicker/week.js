@@ -8,13 +8,31 @@ width: 100%;
 `
 
 const Day = styled.div`
-float: left;
-width: 14.285714285714286%;
-font-size: 0.8em;
-padding: 4px 0;
-cursor: pointer;
-text-align: center;
-border-radius: 3px;
+    float: left;
+    width: 14.285714285714286%;
+    font-size: 0.8em;
+    padding: 4px 0;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 3px;
+
+    &:hover {
+        background: #EAEAEA;                
+    }
+
+    &.other-month {
+        color: #AAA;        
+    }
+
+    &.today {
+        background: #68b53e;
+        color: white;        
+    }
+
+    &.selected {
+        background: #026aa7;
+        color: white;
+    }
 `
 
 export default class Week extends Component {
@@ -35,7 +53,7 @@ export default class Week extends Component {
     )
 
     getDayClassName= (day) => {
-        var className = "day";
+        var className = "";
         if (DateUtilities.isSameDay(day, new Date()))
             className += " today";
         if (this.props.month !== day.getMonth())
@@ -64,7 +82,7 @@ export default class Week extends Component {
         return (
             <WeekContainer>
                 {days.map((day,i)=> (
-                    <Day>{DateUtilities.toDayOfMonthString(day)}</Day>
+                    <Day key={i} className={this.getDayClassName(day)} onClick={this.onSelect.bind(null,day)}>{DateUtilities.toDayOfMonthString(day)}</Day>
                 ))}
             </WeekContainer>
         )
